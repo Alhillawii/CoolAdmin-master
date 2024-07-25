@@ -62,6 +62,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row m-t-30">
                 <div class="col-md-12">
                     <!-- DATA TABLE-->
@@ -73,6 +74,7 @@
                                     <th>admin_name</th>
                                     <th>email</th>
                                     <th>password</th>
+                                    <th>Ediit/Delete</th>
 
                                 </tr>
                             </thead>
@@ -94,6 +96,17 @@
                         $stmt->close();
                     }
 
+                   
+                    if (isset($_GET['delete'])) {
+                        $id = $_GET['delete'];
+                        $stmt = $conn->prepare("DELETE FROM users_admin WHERE ID_admin = ?");
+                        $stmt->bind_param("i", $id);
+                        $stmt->execute();
+                        $stmt->close();
+                    }
+
+
+
                        $query = "SELECT * FROM users_admin";
                        $result = $conn->query($query);
                        
@@ -104,6 +117,10 @@
                                echo "<td>{$row['admin_name']}</td>";
                                echo "<td>{$row['email']}</td>";
                                echo "<td>{$row['password']}</td>";
+                               echo "<td>
+                               <a class='btn'  href='edit.php?id={$row['ID_admin']}'>Edit</a>
+                               <a class='btn btn-delete' href='manage_admin.php?delete={$row['ID_admin']}'>Delete</a>
+                             </td>";
                                echo "</tr>";
                            }
                        }
